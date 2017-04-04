@@ -9,11 +9,19 @@ var AuthorList = require('./authorList');
 
 var Authors = React.createClass({
     getInitialState: function () {
-        return { 
+        return {
             authors: AuthorStore.getAllAuthors()
         };
     },
-    
+    componentWillMount: function () {
+        AuthorStore.addChangeListener(this._onChange);
+    },
+    componentWillUnMount: function () {
+        AuthorStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function () {
+        this.setState({ authors: AuthorStore.getAllAuthors() });
+    },
     render: function () {
         return (
             <div>
